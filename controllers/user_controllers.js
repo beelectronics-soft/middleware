@@ -24,14 +24,14 @@ const getUsers = (req, res) => {
 const getUser= (req, res) => {
     sql.connect(configSlave, (err) => {
         if (err) {
-            res.status(400).send(err.message);
+            res.status(400).send(false);
 
         } else {
 
             var request = new sql.Request();
             request.query(`SELECT U.idUser, U.nameUser, U.passUser, U.imgUser, T.nameUserType FROM Users AS U LEFT JOIN UserTypes as T ON (U.idUserType = T.idUserType) WHERE U.idUser = ${req.params.id}`, (e, r) => {
                 if (e) {
-                    res.status(400).send(e.message);
+                    res.status(400).send(false);
                 } else {
                     res.status(200).send(r.recordset[0]);
                 }
@@ -100,7 +100,7 @@ const addUser = (req, res) => {
 const updateUser = (req, res) => {
     sql.connect(configMaster, (err) => {
         if (err) {
-            res.status(400).send(err.message);
+            res.status(400).send({ status: false, message: `${err.message}` });
 
         } else {
             var request = new sql.Request();
@@ -108,9 +108,9 @@ const updateUser = (req, res) => {
             console.log(data);
             request.query(`UPDATE Users SET nameUser = '${data.nameUser}', passUser = '${data.passUser}', idUserType = ${data.idUserType}, imgUser = '${data.imgUser}' WHERE Users.idUser = ${data.idUser}`, (e, r) => {
                 if (e) {
-                    res.status(400).send(`Request error: ${e.message}`);
+                    res.status(400).send({ status: false, message: `${e.message}` });
                 } else {
-                    res.status(200).send(r.recordset);
+                    res.status(200).send({ status: true });
                 }
             });
         }
