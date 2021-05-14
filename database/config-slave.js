@@ -6,7 +6,7 @@ module.exports = {
     database: "Beelectronics",
 
     // server: "26.159.75.148",
-    // database: "final replication",
+    // database: "Finalbee",
 
     options: {
         "enableArithAbort": true,

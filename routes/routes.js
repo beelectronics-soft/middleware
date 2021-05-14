@@ -42,4 +42,11 @@ const { addRecord } = require('../controllers/record_controller');
 router.get('/records/:id', getRecords);
 router.post('/records', addRecord);
 
+const { beginTrans } = require('../controllers/record_controller');
+const { commitTrans } = require('../controllers/record_controller');
+const { rollbackTrans } = require('../controllers/record_controller');
+router.post('/trans', beginTrans);
+router.post('/commit', commitTrans);
+router.post('/rollback', rollbackTrans);
+
 module.exports = router;

@@ -42,7 +42,61 @@ const addRecord = (req, res) => {
     });
 }
 
+const beginTrans = (req, res) => {
+    sql.connect(configMaster, (err) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            var request = new sql.Request();
+            request.query(`BEGIN TRAN`, (e, r) => {
+                if (e) {
+                    res.status(400).send(e.message);
+                } else {
+                    res.status(200).send(true);
+                }
+            });
+        }
+    });
+}
+
+const commitTrans = (req, res) => {
+    sql.connect(configMaster, (err) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            var request = new sql.Request();
+            request.query(`COMMIT`, (e, r) => {
+                if (e) {
+                    res.status(400).send(e.message);
+                } else {
+                    res.status(200).send(true);
+                }
+            });
+        }
+    });
+}
+
+const rollbackTrans = (req, res) => {
+    sql.connect(configMaster, (err) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            var request = new sql.Request();
+            request.query(`ROLLBACK`, (e, r) => {
+                if (e) {
+                    res.status(400).send(e.message);
+                } else {
+                    res.status(200).send(true);
+                }
+            });
+        }
+    });
+}
+
 module.exports = {
     addRecord,
-    getRecords
+    getRecords, 
+    beginTrans, 
+    commitTrans, 
+    rollbackTrans
 }

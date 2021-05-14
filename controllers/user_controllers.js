@@ -10,7 +10,7 @@ const getUsers = (req, res) => {
         } else {
 
             var request = new sql.Request();
-            request.query(`SELECT U.idUser, U.nameUser, U.passUser, U.imgUser, T.nameUserType FROM Users AS U LEFT JOIN UserTypes as T ON (U.idUserType = T.idUserType) ORDER BY nameUser`, (e, r) => {
+            request.query(`SELECT U.idUser, U.nameUser, U.passUser, U.imgUser, U.statusUser, T.nameUserType FROM Users AS U LEFT JOIN UserTypes as T ON (U.idUserType = T.idUserType) ORDER BY nameUser`, (e, r) => {
                 if (e) {
                     res.status(400).send(e.message);
                 } else {
@@ -29,7 +29,7 @@ const getUser= (req, res) => {
         } else {
 
             var request = new sql.Request();
-            request.query(`SELECT U.idUser, U.nameUser, U.passUser, U.imgUser, T.nameUserType FROM Users AS U LEFT JOIN UserTypes as T ON (U.idUserType = T.idUserType) WHERE U.idUser = ${req.params.id}`, (e, r) => {
+            request.query(`SELECT U.idUser, U.nameUser, U.passUser, U.imgUser, U.statusUser, T.nameUserType FROM Users AS U LEFT JOIN UserTypes as T ON (U.idUserType = T.idUserType) WHERE U.idUser = ${req.params.id}`, (e, r) => {
                 if (e) {
                     res.status(400).send(false);
                 } else {
@@ -48,7 +48,7 @@ const getStorers = (req, res) => {
         } else {
             const STORER_ID = 2;
             var request = new sql.Request();
-            request.query(`SELECT U.idUser, U.nameUser, U.passUser, U.imgUser, T.nameUserType FROM Users AS U LEFT JOIN UserTypes as T ON (U.idUserType = T.idUserType) WHERE T.idUserType = ${STORER_ID} ORDER BY nameUser`, (e, r) => {
+            request.query(`SELECT U.idUser, U.nameUser, U.passUser, U.imgUser, U.statusUser, T.nameUserType FROM Users AS U LEFT JOIN UserTypes as T ON (U.idUserType = T.idUserType) WHERE T.idUserType = ${STORER_ID} ORDER BY nameUser`, (e, r) => {
                 if (e) {
                     res.status(400).send(e.message);
                 } else {
@@ -86,7 +86,7 @@ const addUser = (req, res) => {
         } else {
             var request = new sql.Request();
             var data = req.body;
-            request.query(`INSERT INTO Users (nameUser, passUser, idUserType, imgUser) VALUES ('${data.nameUser}', '${data.passUser}', ${data.idUserType}, '${data.imgUser}')`, (e, r) => {
+            request.query(`INSERT INTO Users (nameUser, passUser, idUserType, imgUser, statusUser) VALUES ('${data.nameUser}', '${data.passUser}', ${data.idUserType}, '${data.imgUser}', 0)`, (e, r) => {
                 if (e) {
                     res.status(400).send(`Request error: ${e.message}`);
                 } else {
@@ -106,7 +106,7 @@ const updateUser = (req, res) => {
             var request = new sql.Request();
             var data = req.body;
             console.log(data);
-            request.query(`UPDATE Users SET nameUser = '${data.nameUser}', passUser = '${data.passUser}', idUserType = ${data.idUserType}, imgUser = '${data.imgUser}' WHERE Users.idUser = ${data.idUser}`, (e, r) => {
+            request.query(`UPDATE Users SET nameUser = '${data.nameUser}', passUser = '${data.passUser}', idUserType = ${data.idUserType}, imgUser = '${data.imgUser}', statusUser = ${data.statusUser} WHERE Users.idUser = ${data.idUser}`, (e, r) => {
                 if (e) {
                     res.status(400).send({ status: false, message: `${e.message}` });
                 } else {
